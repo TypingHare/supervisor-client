@@ -1,0 +1,17 @@
+::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+}
+
+html {
+    scrollbar-width: none;
+}
+
+body {
+    margin: 0;
+}
+
+#root {
+    min-width: 100vw;
+    min-height: 100vh;
+}

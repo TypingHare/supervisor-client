@@ -1,0 +1,10 @@
+### macOS ###
+.DS_Store
+
+### JetBrains and VSCode ###
+.idea
+.vscode
+
+### NodeJS ###
+node_modules
+dist

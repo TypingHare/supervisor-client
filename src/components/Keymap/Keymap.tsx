@@ -1,45 +1,28 @@
 import { Box } from '@mui/material'
 import { ElementId } from '../../common/constants/ElementId.ts'
+import hotkeys from 'hotkeys-js'
 
+// Todo: Remove this
 export function Keymap() {
-    document.addEventListener('keydown', function(event) {
-        const key = event.key.toLowerCase()
+  function listenKeyDown(key: string, callback: () => void) {
+    hotkeys(key, { keydown: true }, (event) => {
+      if (document.activeElement?.id === ElementId.CONTROL_BAR_INPUT) {
+        return
+      }
 
-        if (key === ' ' || key == 'i') {
-            if (document.activeElement?.id === ElementId.CONTROL_BAR_INPUT) {
-                return
-            }
-
-            event.preventDefault()
-            getControlBarInput().focus()
-        }
-
-        if (key === 'escape') {
-            event.preventDefault()
-            if (document.activeElement?.id === ElementId.CONTROL_BAR_INPUT) {
-                getControlBarInput().blur()
-            }
-        }
-
-        if (key === 's') {
-            if (document.activeElement?.id === ElementId.CONTROL_BAR_INPUT) {
-                return
-            }
-
-            event.preventDefault()
-        }
+      event.preventDefault()
+      event.stopPropagation()
+      callback()
     })
+  }
 
-    return (
-        <Box aria-label="Keymap" hidden />
-    )
-}
+  listenKeyDown('space, i', () => {
+    document.getElementById(ElementId.CONTROL_BAR_INPUT)!.focus()
+  })
 
-function getControlBarInput(): HTMLInputElement {
-    const element = document.getElementById(ElementId.CONTROL_BAR_INPUT)
-    if (!element) {
-        console.error(`Element with such ID not found: ${ElementId.CONTROL_BAR_INPUT}`)
-    }
+  listenKeyDown('escape', () => {
+    document.getElementById(ElementId.CONTROL_BAR_INPUT)!.blur()
+  })
 
-    return element as HTMLInputElement
+  return <Box aria-label="Keymap" hidden />
 }
